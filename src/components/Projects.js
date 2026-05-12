@@ -1,81 +1,86 @@
 import React from 'react';
 
-const Projects = () => {
-    const projects = [
-        {
-            image: '/assets/images.png',
-            title: 'Hope Charity Website',
-            description: 'A fully responsive charity website designed to enhance online presence and drive donations. Features include intuitive navigation, compelling storytelling sections, donation integration, and volunteer sign-up forms. Built with accessibility and user engagement as top priorities.',
-            tags: ['HTML5', 'CSS3', 'JavaScript', 'Responsive Design']
-        },
-        {
-            image: '/assets/Capture.PNG',
-            title: 'E-Commerce Mobile App UI',
-            description: 'A complete UI/UX design system for a modern e-commerce mobile application. Includes user flows, wireframes, high-fidelity mockups, and interactive prototypes. Features product browsing, cart management, checkout flow, and user account features with a focus on conversion optimization.',
-            tags: ['Figma', 'UI/UX Design', 'Prototyping', 'Design System']
-        },
-        {
-            image: '/assets/images.jpeg',
-            title: 'Professional Portfolio Website',
-            description: 'A modern, fully responsive portfolio website showcasing projects and skills. Features smooth animations, scroll effects, parallax backgrounds, and interactive elements. Built with performance optimization and SEO best practices. Includes project galleries, testimonials, and contact integration.',
-            tags: ['HTML5', 'CSS3', 'JavaScript', 'Animation', 'Responsive']
-        },
-        {
-            image: '/assets/anime-style-cozy-home-interior-with-furnishings_23-2151176469.jpg',
-            title: 'Analytics Dashboard',
-            description: 'An interactive analytics dashboard built with React.js, featuring real-time data visualization, charts, and graphs. Implements state management, API integration, and responsive data tables. Designed for business intelligence with customizable widgets and export functionality.',
-            tags: ['React.js', 'Chart.js', 'REST API', 'Data Visualization']
-        },
-        {
-            image: '/assets/Yuji_Itadori_29.webp',
-            title: 'Task Management Web App',
-            description: 'A full-featured task management application with drag-and-drop functionality, project organization, and team collaboration features. Includes user authentication, real-time updates, deadline tracking, and progress visualization. Built with modern web technologies and clean architecture.',
-            tags: ['React.js', 'Firebase', 'Drag & Drop', 'Real-time']
-        },
-        {
-            image: '/assets/IMG_0648.JPG',
-            title: 'SaaS Landing Page',
-            description: 'A high-conversion landing page for a SaaS product, featuring modern design principles, engaging animations, and clear call-to-actions. Optimized for performance with lazy loading, integrated with analytics, and includes email capture forms. Fully responsive across all devices.',
-            tags: ['HTML5', 'CSS3', 'JavaScript', 'SEO Optimized']
-        }
-    ];
+const PROJECTS = [
+    {
+        icon: 'fa-solid fa-heart',
+        color: 'pi-pink',
+        title: 'Hope Charity Website',
+        description: 'A fully responsive charity platform designed to connect donors with meaningful causes. Features secure donation integration with multiple payment options.',
+        tags: [
+            { label: 'HTML5', color: 'tag-c1' },
+            { label: 'CSS3', color: 'tag-c2' },
+            { label: 'JavaScript', color: 'tag-c3' },
+            { label: 'Payment API', color: 'tag-c4' },
+            { label: 'Responsive', color: 'tag-c5' }
+        ]
+    },
+    {
+        icon: 'fa-solid fa-bag-shopping',
+        color: 'pi-teal',
+        title: 'E-Commerce App UI',
+        description: 'Complete mobile app design featuring 50+ meticulously crafted screens. Includes intuitive product catalog with filters, smart cart system.',
+        tags: [
+            { label: 'Figma', color: 'tag-c4' },
+            { label: 'UI/UX', color: 'tag-c5' },
+            { label: 'Prototyping', color: 'tag-c2' },
+            { label: 'Mobile Design', color: 'tag-c3' },
+            { label: 'User Research', color: 'tag-c1' }
+        ]
+    },
+    {
+        icon: 'fa-solid fa-chart-column',
+        color: 'pi-orange',
+        title: 'Analytics Dashboard',
+        description: 'Powerful real-time data visualization platform for business intelligence. Features interactive charts with drill-down capabilities, customizable reports.',
+        tags: [
+            { label: 'React', color: 'tag-c2' },
+            { label: 'Chart.js', color: 'tag-c4' },
+            { label: 'Node.js', color: 'tag-c3' },
+            { label: 'MongoDB', color: 'tag-c5' },
+            { label: 'REST API', color: 'tag-c1' }
+        ]
+    },
+    {
+        icon: 'fa-solid fa-list-check',
+        color: 'pi-magenta',
+        title: 'Task Management System',
+        description: 'Enterprise-grade collaborative task manager with intuitive drag-drop kanban boards, real-time synchronization across all devices, team workflows.',
+        tags: [
+            { label: 'React', color: 'tag-c4' },
+            { label: 'Firebase', color: 'tag-c1' },
+            { label: 'Real-time DB', color: 'tag-c2' },
+            { label: 'Cloud Functions', color: 'tag-c5' },
+            { label: 'PWA', color: 'tag-c3' }
+        ]
+    }
+];
 
-    return (
-        <section id="projects" className="projects-section section">
-            <div className="container">
-                <div className="section-header reveal">
-                    <span className="section-label">My Work</span>
-                    <h2 className="section-title">Featured Projects</h2>
-                </div>
-                <div className="projects-grid">
-                    {projects.map((project, index) => (
-                        <article className="project-card reveal" key={index}>
-                            <div className="project-image">
-                                <img src={project.image} alt={project.title} loading="lazy" />
-                                <div className="project-overlay">
-                                    <a href="#home" className="project-link">
-                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="project-content">
-                                <h3>{project.title}</h3>
-                                <p className="project-description">{project.description}</p>
-                                <div className="tech-tags">
-                                    {project.tags.map((tag, tagIndex) => (
-                                        <span className="tag" key={tagIndex}>{tag}</span>
-                                    ))}
-                                </div>
-                                <a href="#home" className="btn btn-small">
-                                    View Project <i className="fa-solid fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    ))}
-                </div>
+const Projects = ({ isActive }) => (
+    <section id="projects" className={`section ${isActive ? 'active' : ''}`}>
+        <div className="section-inner">
+            <div className="section-header">
+                <div className="section-label">Featured Work</div>
+                <h2 className="section-title">My Projects</h2>
             </div>
-        </section>
-    );
-};
+
+            <div className="projects-grid">
+                {PROJECTS.map((p, i) => (
+                    <article className="project-card" key={i}>
+                        <div className={`project-icon ${p.color}`}><i className={p.icon}></i></div>
+                        <div className="project-content">
+                            <h3>{p.title}</h3>
+                            <p>{p.description}</p>
+                            <div className="tag-row">
+                                {p.tags.map((t, ti) => (
+                                    <span className={`tag ${t.color}`} key={ti}>{t.label}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+);
 
 export default Projects;

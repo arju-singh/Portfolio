@@ -1,100 +1,87 @@
 import React from 'react';
 
-const Skills = () => {
-    const technicalSkills = [
-        'HTML5 & CSS3',
-        'JavaScript (ES6+)',
-        'React.js',
-        'Responsive Design',
-        'TypeScript',
-        'Tailwind CSS'
-    ];
+const EXPERIENCE = [
+    {
+        icon: 'fa-solid fa-building-columns',
+        color: 'exp-purple',
+        title: 'Software Development Intern',
+        org: 'Ministry of Housing & Urban Affairs'
+    },
+    {
+        icon: 'fa-solid fa-chalkboard-user',
+        color: 'exp-pink',
+        title: 'Software Instructor',
+        org: 'Mega TechBot'
+    },
+    {
+        icon: 'fa-solid fa-paw',
+        color: 'exp-cyan',
+        title: 'Founder',
+        org: 'PetsCare.Club'
+    }
+];
 
-    const designSkills = [
-        'UI/UX Design',
-        'Figma',
-        'Wireframing & Prototyping',
-        'Typography & Color Theory',
-        'Adobe XD',
-        'User Research'
-    ];
+const TECH = [
+    'fa-brands fa-html5',
+    'fa-brands fa-css3-alt',
+    'fa-brands fa-js',
+    'fa-brands fa-react',
+    'fa-brands fa-node',
+    'fa-brands fa-git-alt',
+    'fa-brands fa-github',
+    'fa-brands fa-figma',
+    'fa-brands fa-sass',
+    'fa-brands fa-python'
+];
 
-    const tools = [
-        { icon: 'fa-brands fa-html5', name: 'HTML5' },
-        { icon: 'fa-brands fa-css3-alt', name: 'CSS3' },
-        { icon: 'fa-brands fa-js', name: 'JavaScript' },
-        { icon: 'fa-brands fa-react', name: 'React' },
-        { icon: 'fa-brands fa-node', name: 'Node.js' },
-        { icon: 'fa-brands fa-git-alt', name: 'Git' },
-        { icon: 'fa-brands fa-github', name: 'GitHub' },
-        { icon: 'fa-brands fa-figma', name: 'Figma' },
-        { icon: 'fa-brands fa-npm', name: 'NPM' },
-        { icon: 'fa-brands fa-sass', name: 'Sass' },
-        { icon: 'fa-brands fa-bootstrap', name: 'Bootstrap' },
-        { icon: 'fa-solid fa-wind', name: 'Tailwind' },
-        { icon: 'fa-brands fa-wordpress', name: 'WordPress' },
-        { icon: 'fa-solid fa-database', name: 'MongoDB' },
-        { icon: 'fa-brands fa-python', name: 'Python' },
-        { icon: 'fa-solid fa-fire', name: 'Firebase' },
-        { icon: 'fa-brands fa-docker', name: 'Docker' },
-        { icon: 'fa-solid fa-code-branch', name: 'REST API' },
-        { icon: 'fa-brands fa-linux', name: 'Linux' },
-        { icon: 'fa-solid fa-terminal', name: 'VS Code' }
-    ];
-
-    return (
-        <section id="skills" className="skills-section section">
-            <div className="container">
-                <div className="section-header reveal">
-                    <span className="section-label">My Capabilities</span>
-                    <h2 className="section-title">Skills & Expertise</h2>
-                    <p className="section-description">Technologies and tools I work with</p>
-                </div>
-
-                <div className="skills-container">
-                    <div className="skills-category reveal">
-                        <h3 className="category-title">
-                            <i className="fa-solid fa-code"></i> Technical Skills
-                        </h3>
-                        <div className="skills-list">
-                            {technicalSkills.map((skill, index) => (
-                                <div className="skill-item" key={index}>
-                                    <i className="fa-solid fa-check-circle"></i>
-                                    <span>{skill}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="skills-category reveal">
-                        <h3 className="category-title">
-                            <i className="fa-solid fa-palette"></i> Design Skills
-                        </h3>
-                        <div className="skills-list">
-                            {designSkills.map((skill, index) => (
-                                <div className="skill-item" key={index}>
-                                    <i className="fa-solid fa-check-circle"></i>
-                                    <span>{skill}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="tools-section reveal">
-                    <h3 className="tools-title">Tools & Technologies</h3>
-                    <div className="tools-grid">
-                        {tools.map((tool, index) => (
-                            <div className="tool-item" key={index}>
-                                <i className={tool.icon}></i>
-                                <span>{tool.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+const Skills = ({ isActive }) => (
+    <section id="skills" className={`section ${isActive ? 'active' : ''}`}>
+        <div className="section-inner">
+            <div className="section-header">
+                <div className="section-label">Code &amp; Creations</div>
+                <h2 className="section-title">Explore My Work</h2>
             </div>
-        </section>
-    );
-};
+
+            <div className="skills-pair">
+                <a className="creation-card" href="https://github.com/deadxolo" target="_blank" rel="noopener noreferrer">
+                    <div className="creation-icon icon-dark"><i className="fa-brands fa-github"></i></div>
+                    <div className="creation-content">
+                        <h3>GitHub Profile</h3>
+                        <p>Check out my repositories, contributions and open source projects</p>
+                        <span className="creation-link">github.com/deadxolo <i className="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a className="creation-card" href="https://flappybird.arjusingh.com" target="_blank" rel="noopener noreferrer">
+                    <div className="creation-icon icon-pink"><i className="fa-solid fa-gamepad"></i></div>
+                    <div className="creation-content">
+                        <h3>Flappy Arju</h3>
+                        <p>Play my custom Flappy Bird game — a fun side project I built</p>
+                        <span className="creation-link">flappybird.arjusingh.com <i className="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+
+            <h3 className="work-title">Work Experience</h3>
+            <div className="exp-grid">
+                {EXPERIENCE.map((e, i) => (
+                    <div className="exp-card" key={i}>
+                        <div className={`exp-icon ${e.color}`}><i className={e.icon}></i></div>
+                        <div className="exp-content">
+                            <h5>{e.title}</h5>
+                            <div className="org">{e.org}</div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="tech-strip">
+                {TECH.map((icon, i) => (
+                    <div className="tech-icon" key={i}><i className={icon}></i></div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
 
 export default Skills;

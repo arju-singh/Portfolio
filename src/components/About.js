@@ -1,141 +1,72 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
-const About = () => {
-    const [counters, setCounters] = useState({
-        projects: 0,
-        clients: 0,
-        awards: 0,
-        coffee: 0
-    });
-    const [hasAnimated, setHasAnimated] = useState(false);
-    const sectionRef = useRef(null);
+const TRAITS = [
+    { icon: 'fa-solid fa-brain', label: 'Quick Learner' },
+    { icon: 'fa-solid fa-bug', label: 'Debug Expert' },
+    { icon: 'fa-solid fa-puzzle-piece', label: 'Problem Solver' },
+    { icon: 'fa-solid fa-bolt', label: 'Fast Coder', yellow: true }
+];
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && !hasAnimated) {
-                    animateCounters();
-                    setHasAnimated(true);
-                }
-            },
-            { threshold: 0.3 }
-        );
+const STARTUPS = [
+    { icon: 'fa-solid fa-paw', name: 'PetsCare.Club' },
+    { icon: 'fa-solid fa-globe', name: 'Land.Technology' },
+    { icon: 'fa-solid fa-gavel', name: 'Lawms.in' },
+    { icon: 'fa-solid fa-futbol', name: 'Kaptaan' }
+];
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
-            }
-        };
-    }, [hasAnimated]);
-
-    const animateCounters = () => {
-        const targets = { projects: 50, clients: 30, awards: 15, coffee: 1000 };
-        const duration = 2000;
-        const steps = 60;
-        const stepDuration = duration / steps;
-
-        Object.keys(targets).forEach((key) => {
-            const target = targets[key];
-            const increment = target / steps;
-            let current = 0;
-            let step = 0;
-
-            const timer = setInterval(() => {
-                current += increment;
-                step++;
-
-                if (step >= steps) {
-                    setCounters(prev => ({ ...prev, [key]: target }));
-                    clearInterval(timer);
-                } else {
-                    setCounters(prev => ({ ...prev, [key]: Math.ceil(current) }));
-                }
-            }, stepDuration);
-        });
-    };
-
-    return (
-        <section id="about" className="about-section section" ref={sectionRef}>
-            <div className="container">
-                <div className="section-header reveal">
-                    <h2 className="section-title">About Me</h2>
-                    <p className="section-description">Passionate about creating exceptional digital experiences</p>
+const About = ({ isActive, goTo }) => (
+    <section id="about" className={`section ${isActive ? 'active' : ''}`}>
+        <div className="section-inner">
+            <div className="about-grid">
+                <div className="about-photo-wrap">
+                    <div className="orbit"></div>
+                    <div className="orbit orbit-2"></div>
+                    <img src="/assets/IMG_5341.jpg" alt="Arju Singh" className="about-photo" />
+                    <div className="float-icon fi-1"><i className="fa-solid fa-rocket"></i></div>
+                    <div className="float-icon fi-2"><i className="fa-solid fa-lightbulb"></i></div>
+                    <div className="float-icon fi-3"><i className="fa-solid fa-code"></i></div>
                 </div>
 
-                <div className="about-grid">
-                    <div className="about-image reveal">
-                        <div className="about-image-wrapper">
-                            <img src="/assets/IMG_5341.jpg" alt="Arju Singh at work" className="about-img" />
-                        </div>
-                    </div>
+                <div className="about-content">
+                    <div className="section-label left-only">About Me</div>
+                    <h2 className="about-title">Entrepreneur &amp; Tech Innovator</h2>
 
-                    <div className="about-content reveal">
-                        <p className="about-lead">
-                            I'm a <strong>Frontend Engineer</strong> and <strong>UI/UX Designer</strong> who specializes in building exceptional digital experiences. I combine creativity with technical expertise to deliver solutions that are both beautiful and functional.
-                        </p>
+                    <p className="about-text">
+                        I'm an <span className="hl-orange">Entrepreneur</span> and{' '}
+                        <span className="hl-orange">Software Engineer | Generative AI Engineer</span>{' '}
+                        building the future through technology. I'm working on revolutionary startups
+                        that are transforming industries, along with my co-founder cum mentor{' '}
+                        <span className="hl-pink">Akshay Kotish</span>.
+                    </p>
+                    <p className="about-text">
+                        What sets me apart? I can{' '}
+                        <span className="hl-orange">understand complex code in seconds</span> and
+                        solve intricate problems with razor-sharp logical thinking. My ability to
+                        quickly grasp any codebase and debug issues makes me a powerhouse in development.
+                    </p>
 
-                        <p className="about-text">
-                            My journey in web development started with a fascination for how design and code come together to create interactive experiences. Today, I focus on building responsive, accessible web applications using modern technologies and best practices.
-                        </p>
-
-                        <p className="about-text">
-                            I believe in pixel-perfect design, clean code, and creating interfaces that users love. Whether it's a landing page, a complex web application, or a complete design system, I approach each project with dedication and attention to detail.
-                        </p>
-
-                        <div className="about-highlights">
-                            <div className="highlight-item">
-                                <i className="fa-solid fa-check-circle"></i>
-                                <span>Responsive & Mobile-First Design</span>
+                    <div className="trait-grid">
+                        {TRAITS.map((t, i) => (
+                            <div className="trait-card" key={i}>
+                                <i className={`${t.icon} ${t.yellow ? 'trait-icon-yellow' : ''}`}></i>
+                                <span>{t.label}</span>
                             </div>
-                            <div className="highlight-item">
-                                <i className="fa-solid fa-check-circle"></i>
-                                <span>Clean, Maintainable Code</span>
-                            </div>
-                            <div className="highlight-item">
-                                <i className="fa-solid fa-check-circle"></i>
-                                <span>User-Centered Approach</span>
-                            </div>
-                            <div className="highlight-item">
-                                <i className="fa-solid fa-check-circle"></i>
-                                <span>Performance Optimization</span>
-                            </div>
-                        </div>
+                        ))}
+                    </div>
 
-                        <a href="#contact" className="btn btn-primary">
-                            <i className="fa-solid fa-message"></i> Let's Work Together
-                        </a>
-                    </div>
-                </div>
-
-                <div className="stats-grid reveal">
-                    <div className="stat-card">
-                        <i className="fa-solid fa-code stat-icon"></i>
-                        <h3 className="stat-number">{counters.projects}+</h3>
-                        <p className="stat-label">Projects Completed</p>
-                    </div>
-                    <div className="stat-card">
-                        <i className="fa-solid fa-users stat-icon"></i>
-                        <h3 className="stat-number">{counters.clients}+</h3>
-                        <p className="stat-label">Happy Clients</p>
-                    </div>
-                    <div className="stat-card">
-                        <i className="fa-solid fa-award stat-icon"></i>
-                        <h3 className="stat-number">{counters.awards}+</h3>
-                        <p className="stat-label">Awards Won</p>
-                    </div>
-                    <div className="stat-card">
-                        <i className="fa-solid fa-coffee stat-icon"></i>
-                        <h3 className="stat-number">{counters.coffee}+</h3>
-                        <p className="stat-label">Cups of Coffee</p>
+                    <div className="about-startups-label">Building Startups</div>
+                    <div className="startup-pills">
+                        {STARTUPS.map((s, i) => (
+                            <button key={i} className="startup-pill" onClick={() => goTo && goTo('startups')}>
+                                <i className={s.icon}></i>
+                                <span>{s.name}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
-        </section>
-    );
-};
+        </div>
+    </section>
+);
 
 export default About;

@@ -1,192 +1,115 @@
 import React, { useState } from 'react';
 
-const Contact = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        job: '',
-        company: '',
-        message: ''
-    });
+const Contact = ({ isActive }) => {
+    const [formData, setFormData] = useState({ name: '', email: '', job: '', company: '', message: '' });
     const [formStatus, setFormStatus] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setFormStatus('');
-
         try {
-            const formDataToSend = new FormData();
-            formDataToSend.append('name', formData.name);
-            formDataToSend.append('email', formData.email);
-            formDataToSend.append('job', formData.job);
-            formDataToSend.append('company', formData.company);
-            formDataToSend.append('message', formData.message);
-            formDataToSend.append('_captcha', 'false');
-            formDataToSend.append('_subject', 'New Contact Form Submission from Portfolio');
-
-            // Using FormSubmit AJAX endpoint
-            const response = await fetch('https://formsubmit.co/ajax/connect@arjusingh.com', {
-                method: 'POST',
-                body: formDataToSend
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-                setFormStatus('✓ Message sent successfully! I\'ll get back to you soon.');
-                setFormData({
-                    name: '',
-                    email: '',
-                    job: '',
-                    company: '',
-                    message: ''
-                });
-
-                setTimeout(() => {
-                    setFormStatus('');
-                }, 5000);
+            const fd = new FormData();
+            Object.entries(formData).forEach(([k, v]) => fd.append(k, v));
+            fd.append('_captcha', 'false');
+            fd.append('_subject', 'New Contact Form Submission from Portfolio');
+            const res = await fetch('https://formsubmit.co/ajax/connect@arjusingh.com', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                setFormStatus('✓ Message sent! I\'ll get back to you soon.');
+                setFormData({ name: '', email: '', job: '', company: '', message: '' });
+                setTimeout(() => setFormStatus(''), 5000);
             } else {
-                throw new Error(data.message || 'Form submission failed');
+                throw new Error(data.message || 'Failed');
             }
-        } catch (error) {
-            setFormStatus('✗ Oops! Something went wrong. Please try again or email me directly at connect@arjusingh.com');
-            console.error('Form submission error:', error);
+        } catch (err) {
+            setFormStatus('✗ Something went wrong. Email me at connect@arjusingh.com');
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const year = new Date().getFullYear();
+
     return (
-        <section id="contact" className="contact-section section">
-            <div className="container">
-                <div className="section-header reveal">
-                    <span className="section-label">Let's Connect</span>
-                    <h2 className="section-title">Get In Touch</h2>
-                    <p className="section-description">Have a project in mind? Let's work together</p>
-                </div>
+        <section id="contact" className={`section ${isActive ? 'active' : ''}`}>
+            <div className="section-inner">
                 <div className="contact-wrapper">
-                    <div className="contact-info-cards reveal">
-                        <div className="info-card">
-                            <div className="info-icon">
-                                <i className="fa-solid fa-envelope"></i>
-                            </div>
-                            <h3>Email</h3>
-                            <a href="mailto:connect@arjusingh.com" className="info-link">connect@arjusingh.com</a>
-                        </div>
-                        <div className="info-card">
-                            <div className="info-icon">
-                                <i className="fa-brands fa-linkedin"></i>
-                            </div>
-                            <h3>LinkedIn</h3>
-                            <a href="https://www.linkedin.com/in/arju-singh-0ab697228/" target="_blank" rel="noopener noreferrer" className="info-link">Connect with me</a>
-                        </div>
-                        <div className="info-card">
-                            <div className="info-icon">
-                                <i className="fa-brands fa-github"></i>
-                            </div>
-                            <h3>GitHub</h3>
-                            <a href="https://github.com/deadxolo" target="_blank" rel="noopener noreferrer" className="info-link">View my code</a>
+                    <div className="contact-left">
+                        <div className="section-label left-only">Get In Touch</div>
+                        <h2 className="contact-title">Let's create something amazing</h2>
+                        <p className="contact-sub">Have a project in mind? I'd love to hear from you.</p>
+
+                        <div className="contact-info-list">
+                            <a href="mailto:connect@arjusingh.com" className="info-card">
+                                <div className="info-icon ii-pink"><i className="fa-solid fa-envelope"></i></div>
+                                <div>
+                                    <div className="label">Email</div>
+                                    <div className="value">connect@arjusingh.com</div>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/arju-singh-0ab697228/" target="_blank" rel="noopener noreferrer" className="info-card">
+                                <div className="info-icon ii-blue"><i className="fa-brands fa-linkedin-in"></i></div>
+                                <div>
+                                    <div className="label">LinkedIn</div>
+                                    <div className="value">Connect with me</div>
+                                </div>
+                            </a>
+                            <a href="https://github.com/deadxolo" target="_blank" rel="noopener noreferrer" className="info-card">
+                                <div className="info-icon ii-dark"><i className="fa-brands fa-github"></i></div>
+                                <div>
+                                    <div className="label">GitHub</div>
+                                    <div className="value">View my code</div>
+                                </div>
+                            </a>
                         </div>
                     </div>
 
-                    <div className="contact-form-container reveal">
-                        <p className="form-intro">Have a project in mind or want to collaborate? I'd love to hear from you!</p>
-                        <form onSubmit={handleSubmit} className="contact-form">
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label htmlFor="name">Full Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email Address</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
+                    <form onSubmit={handleSubmit} className="contact-form-card">
+                        <div className="form-row">
+                            <div className="field">
+                                <label htmlFor="cf-name">Your Name</label>
+                                <input id="cf-name" type="text" name="name" value={formData.name} onChange={handleChange} required />
                             </div>
-
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label htmlFor="job">Job Title</label>
-                                    <input
-                                        type="text"
-                                        id="job"
-                                        name="job"
-                                        value={formData.job}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="company">Company</label>
-                                    <input
-                                        type="text"
-                                        id="company"
-                                        name="company"
-                                        value={formData.company}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+                            <div className="field">
+                                <label htmlFor="cf-email">Email</label>
+                                <input id="cf-email" type="email" name="email" value={formData.email} onChange={handleChange} required />
                             </div>
-
-                            <div className="form-group">
-                                <label htmlFor="message">Message</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows="5"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                ></textarea>
+                        </div>
+                        <div className="form-row">
+                            <div className="field">
+                                <label htmlFor="cf-job">Job Title</label>
+                                <input id="cf-job" type="text" name="job" value={formData.job} onChange={handleChange} />
                             </div>
+                            <div className="field">
+                                <label htmlFor="cf-company">Company</label>
+                                <input id="cf-company" type="text" name="company" value={formData.company} onChange={handleChange} />
+                            </div>
+                        </div>
+                        <div className="field" style={{ marginBottom: 28 }}>
+                            <label htmlFor="cf-message">Message</label>
+                            <textarea id="cf-message" name="message" rows="2" value={formData.message} onChange={handleChange} required />
+                        </div>
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                            {isSubmitting
+                                ? <><i className="fa-solid fa-spinner fa-spin"></i> Sending...</>
+                                : <>Send Message <i className="fa-solid fa-paper-plane"></i></>}
+                        </button>
+                        {formStatus && (
+                            <p className="form-status" style={{ color: formStatus.startsWith('✓') ? '#34d399' : '#f87171' }}>
+                                {formStatus}
+                            </p>
+                        )}
+                    </form>
+                </div>
 
-                            <button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting}>
-                                {isSubmitting ? (
-                                    <>
-                                        <i className="fa-solid fa-spinner fa-spin"></i> Sending...
-                                    </>
-                                ) : (
-                                    <>
-                                        Send Message <i className="fa-solid fa-paper-plane"></i>
-                                    </>
-                                )}
-                            </button>
-                            {formStatus && (
-                                <p
-                                    className="form-status"
-                                    style={{
-                                        color: formStatus.startsWith('✓') ? '#10b981' : '#ef4444',
-                                        marginTop: '1rem',
-                                        textAlign: 'center',
-                                        fontWeight: '500'
-                                    }}
-                                >
-                                    {formStatus}
-                                </p>
-                            )}
-                        </form>
-                    </div>
+                <div className="contact-footer">
+                    <span className="cf-logo">AS</span>
+                    <span>Entrepreneur &amp; Tech Innovator</span>
+                    <span>© {year} Arju Singh</span>
                 </div>
             </div>
         </section>

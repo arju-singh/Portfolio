@@ -1,107 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const Hero = () => {
-    const [roleIndex, setRoleIndex] = useState(0);
-    const [charIndex, setCharIndex] = useState(0);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [displayText, setDisplayText] = useState('');
+const SantaCap = () => (
+    <svg className="santa-cap" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 38 Q8 14 32 10 Q56 14 56 38 Q40 30 32 30 Q24 30 8 38 Z" fill="#ee2d2d" />
+        <ellipse cx="32" cy="40" rx="28" ry="4" fill="white" />
+        <circle cx="52" cy="14" r="8" fill="white" />
+    </svg>
+);
 
-    const roles = [
-        'Frontend Engineer',
-        'UI/UX Designer',
-        'React Developer',
-        'Creative Problem Solver'
-    ];
+const Hero = ({ isActive, goTo }) => (
+    <section id="home" className={`section ${isActive ? 'active' : ''}`}>
+        <div className="section-inner">
+            <div className="hero-content fade-in">
+                <p className="hero-greeting">Welcome to</p>
+                <h1 className="hero-name">
+                    Arju Singh
+                    <SantaCap />
+                </h1>
+                <span className="hero-universe">Universe</span>
 
-    useEffect(() => {
-        const typingSpeed = 100;
-        const deletingSpeed = 50;
-        const pauseDuration = 2000;
+                <p className="hero-description">
+                    Entrepreneur &amp; Software Engineer | Generative AI Engineer building
+                    revolutionary startups with code that speaks
+                </p>
 
-        const currentRole = roles[roleIndex];
-
-        const timeout = setTimeout(() => {
-            if (!isDeleting) {
-                if (charIndex < currentRole.length) {
-                    setDisplayText(currentRole.substring(0, charIndex + 1));
-                    setCharIndex(charIndex + 1);
-                } else {
-                    setTimeout(() => setIsDeleting(true), pauseDuration);
-                }
-            } else {
-                if (charIndex > 0) {
-                    setDisplayText(currentRole.substring(0, charIndex - 1));
-                    setCharIndex(charIndex - 1);
-                } else {
-                    setIsDeleting(false);
-                    setRoleIndex((roleIndex + 1) % roles.length);
-                }
-            }
-        }, isDeleting ? deletingSpeed : typingSpeed);
-
-        return () => clearTimeout(timeout);
-    }, [charIndex, isDeleting, roleIndex]);
-
-    return (
-        <header id="home" className="hero section">
-            <div className="hero-bg-pattern"></div>
-            <div className="hero-container">
-                <div className="hero-content fade-in">
-                    <p className="hero-greeting">Hello, I'm</p>
-                    <h1 className="hero-title">Arju Singh</h1>
-                    <div className="hero-subtitle-wrapper">
-                        <h2 className="hero-subtitle">
-                            <span className="typing-text">{displayText}</span>
-                            <span className="cursor">|</span>
-                        </h2>
-                    </div>
-                    <p className="hero-description">
-                        Transforming ideas into stunning digital experiences through innovative design and clean code.
-                        Specialized in creating responsive, accessible, and high-performance web applications.
-                    </p>
-
-                    <div className="hero-buttons">
-                        <a href="#projects" className="btn btn-primary">
-                            <i className="fa-solid fa-briefcase"></i> View My Work
-                        </a>
-                        <a href="#contact" className="btn btn-secondary">
-                            <i className="fa-solid fa-paper-plane"></i> Let's Talk
-                        </a>
-                        <a href="#about" className="btn btn-outline">
-                            <i className="fa-solid fa-user"></i> About Me
-                        </a>
-                    </div>
-
-                    <div className="social-bar">
-                        <a href="mailto:connect@arjusingh.com" className="social-icon" data-tooltip="Email me">
-                            <i className="fa-solid fa-envelope"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/arju-singh-0ab697228/" target="_blank" rel="noopener noreferrer" className="social-icon" data-tooltip="LinkedIn">
-                            <i className="fa-brands fa-linkedin"></i>
-                        </a>
-                        <a href="https://github.com/deadxolo" target="_blank" rel="noopener noreferrer" className="social-icon" data-tooltip="GitHub">
-                            <i className="fa-brands fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div className="profile-section slide-in-right">
-                    <div className="profile-wrapper">
-                        <div className="profile-border"></div>
-                        <div className="profile-container">
-                            <img src="/assets/IMG_5341.jpg" alt="Arju Singh - Professional Headshot" className="profile-image" />
+                <div className="hero-cta-grid">
+                    <button className="hero-cta" onClick={() => goTo('projects')}>
+                        <div className="hero-cta-icon icon-orange"><i className="fa-solid fa-rocket"></i></div>
+                        <div className="hero-cta-text">
+                            <div className="hero-cta-title">Let's see what I build</div>
+                            <div className="hero-cta-sub">View Projects</div>
                         </div>
-                    </div>
+                    </button>
+                    <button className="hero-cta" onClick={() => goTo('startups')}>
+                        <div className="hero-cta-icon icon-yellow"><i className="fa-solid fa-lightbulb"></i></div>
+                        <div className="hero-cta-text">
+                            <div className="hero-cta-title">My Ventures</div>
+                            <div className="hero-cta-sub">View Startups</div>
+                        </div>
+                    </button>
+                    <button className="hero-cta" onClick={() => goTo('skills')}>
+                        <div className="hero-cta-icon icon-purple"><i className="fa-solid fa-code"></i></div>
+                        <div className="hero-cta-text">
+                            <div className="hero-cta-title">What I know</div>
+                            <div className="hero-cta-sub">Skills &amp; Tools</div>
+                        </div>
+                    </button>
+                    <button className="hero-cta" onClick={() => goTo('contact')}>
+                        <div className="hero-cta-icon icon-blue"><i className="fa-solid fa-paper-plane"></i></div>
+                        <div className="hero-cta-text">
+                            <div className="hero-cta-title">How to reach me</div>
+                            <div className="hero-cta-sub">Get in Touch</div>
+                        </div>
+                    </button>
                 </div>
             </div>
-            <div className="scroll-indicator">
-                <div className="mouse">
-                    <div className="wheel"></div>
-                </div>
-                <p>Scroll Down</p>
+
+            <div className="scroll-explore">
+                <div className="mouse-icon"></div>
+                <span>Scroll to explore</span>
             </div>
-        </header>
-    );
-};
+        </div>
+    </section>
+);
 
 export default Hero;
