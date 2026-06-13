@@ -40,7 +40,6 @@ export default function Footer() {
             <span className="footer__label">Contact</span>
             <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
             <a href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}>{PROFILE.phone}</a>
-            <span className="muted">{PROFILE.location}</span>
           </div>
         </div>
 

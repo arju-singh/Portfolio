@@ -29,7 +29,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {PROFILE.location} · Available for work
+            Available for work
           </motion.p>
 
           <h1 className="hero__title display">

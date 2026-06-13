@@ -8,7 +8,7 @@ export const PROFILE = {
   roles: ['Entrepreneur', 'Software Engineer', 'Generative AI Engineer'],
   tagline: 'Building revolutionary startups that transform industries — full-stack engineering meets generative AI.',
   summary:
-    'Entrepreneur, Software Engineer and Generative AI Engineer building revolutionary startups that transform industries. Hands-on across full-stack web development, UI/UX design, generative AI and product building. Completed a Software Development Internship with India’s Ministry of Housing and Urban Affairs, and founded and launched four live startups spanning PropTech, legal tech, pet care and fantasy sports.',
+    'Entrepreneur, Software Engineer and Generative AI Engineer building revolutionary startups that transform industries. Hands-on across full-stack web development, UI/UX design, generative AI and product building. Completed a Software Development Internship with India’s Ministry of Housing and Urban Affairs, and founded and launched live startups spanning legal tech and pet care.',
   email: 'connect@arjusingh.com',
   phone: '+91 93064 66642',
   location: 'India',
@@ -23,7 +23,7 @@ export const PROFILE = {
 };
 
 export const STATS = [
-  { value: 4, suffix: '', label: 'Live startups founded' },
+  { value: 2, suffix: '', label: 'Live startups founded' },
   { value: 100, suffix: '+', label: 'Active platform users' },
   { value: 60, suffix: '+', label: 'Developers mentored' },
   { value: 5, suffix: '+', label: 'Years building software' }
@@ -144,24 +144,6 @@ export const PROJECTS = [
     ]
   },
   {
-    slug: 'land-technology',
-    title: 'Land Technology',
-    category: 'Live Startup · PropTech',
-    kind: 'map',
-    year: '2024',
-    accent: '#93c5fd',
-    link: 'https://land.technology',
-    summary: 'PropTech platform with AI property valuations, virtual tours and geofencing.',
-    description:
-      'AI-powered property valuations, virtual tours, geofencing and land-record management built on a full-stack foundation with Google Maps.',
-    tech: ['Full-Stack', 'AI', 'Google Maps API'],
-    metrics: [
-      { k: 'AI', v: 'Valuations' },
-      { k: 'Geo', v: 'Fencing' },
-      { k: '360°', v: 'Virtual tours' }
-    ]
-  },
-  {
     slug: 'lawms',
     title: 'LawMS',
     category: 'Live Startup · LegalTech',
@@ -180,21 +162,21 @@ export const PROJECTS = [
     ]
   },
   {
-    slug: 'kaptaan',
-    title: 'Kaptaan',
-    category: 'Live Startup · Fantasy Sports',
-    kind: 'analytics',
-    year: '2024',
-    accent: '#fca5a5',
-    link: null,
-    summary: 'Fantasy sports with real-time analytics, multiplayer leagues and player insights.',
+    slug: 'portfolio',
+    title: 'Portfolio',
+    category: 'Key Project · Web',
+    kind: 'site',
+    year: '2026',
+    accent: '#c8ff4d',
+    link: 'https://arjusingh.com',
+    summary: 'This site — a fast, animated personal portfolio built from scratch.',
     description:
-      'Real-time analytics engine, multiplayer leagues and data-driven player insights. Currently in beta.',
-    tech: ['Node.js', 'Real-time APIs', 'Analytics Engine'],
+      'A custom-built personal portfolio with a single source-of-truth data layer, smooth scroll, 3D/particle effects and a fully responsive design. Built with React and Vite, deployed on Firebase Hosting at arjusingh.com.',
+    tech: ['React', 'Vite', 'Three.js', 'Framer Motion', 'Firebase Hosting'],
     metrics: [
-      { k: 'Live', v: 'Analytics' },
-      { k: 'Multi', v: 'Player leagues' },
-      { k: 'Beta', v: 'Stage' }
+      { k: 'Live', v: 'arjusingh.com' },
+      { k: '3D', v: 'Particle FX' },
+      { k: '100', v: 'Lighthouse-ready' }
     ]
   },
   {

@@ -6,20 +6,46 @@ import { PROFILE } from '../data/profile';
 import './Contact.css';
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', message: '', company: '' });
+  // status: 'idle' | 'sending' | 'sent' | 'error'
+  const [status, setStatus] = useState('idle');
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // No backend — compose a mailto so the message is never lost.
+  // Fallback if the backend is unreachable — never lose the message.
+  const openMailto = () => {
     const subject = encodeURIComponent(`Portfolio enquiry from ${form.name || 'someone'}`);
     const body = encodeURIComponent(
       `${form.message}\n\n— ${form.name}${form.email ? ` (${form.email})` : ''}`
     );
     window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('Request failed');
+      setStatus('sent');
+      setForm({ name: '', email: '', message: '', company: '' });
+    } catch {
+      // Backend unavailable (e.g. running the static build with no Functions) —
+      // fall back to the user's mail client so the message still gets through.
+      setStatus('error');
+      openMailto();
+    }
+  };
+
+  const labels = {
+    idle: 'Send message',
+    sending: 'Sending…',
+    sent: 'Message sent ✓',
+    error: 'Opening your mail app…',
   };
 
   return (
@@ -91,11 +117,26 @@ export default function Contact() {
               <span>Message</span>
               <textarea rows={5} value={form.message} onChange={update('message')} placeholder="Tell me about it…" required />
             </label>
-            <button type="submit" className="btn btn--solid contact__submit" data-hover>
-              {sent ? 'Opening your mail app…' : 'Send message'} <span className="arrow">↗</span>
+
+            {/* honeypot — hidden from real users; bots that fill it are dropped */}
+            <input
+              type="text"
+              name="company"
+              value={form.company}
+              onChange={update('company')}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+
+            <button type="submit" className="btn btn--solid contact__submit" data-hover disabled={status === 'sending'}>
+              {labels[status]} <span className="arrow">↗</span>
             </button>
             <p className="contact__note">
-              This opens your email client pre-filled — or just write to {PROFILE.email} directly.
+              {status === 'sent'
+                ? `Thanks — I'll get back to you soon. You can also write to ${PROFILE.email} directly.`
+                : `Sent straight to my inbox — or just write to ${PROFILE.email} directly.`}
             </p>
           </motion.form>
         </div>

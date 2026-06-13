@@ -21,7 +21,7 @@ export default function Projects() {
         index="02"
         eyebrow="Projects"
         title="Things I built"
-        lead="Four live startups and a set of key projects — each shipped end-to-end, from product strategy and UI/UX through full-stack engineering and AI."
+        lead="Live startups and a set of key projects — each shipped end-to-end, from product strategy and UI/UX through full-stack engineering and AI."
       />
 
       <section className="section">

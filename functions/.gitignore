@@ -1,0 +1,8 @@
+node_modules/
+
+# Local secrets — never commit
+.env
+.env.*
+!.env.example
+*firebase-adminsdk*.json
+serviceAccountKey*.json

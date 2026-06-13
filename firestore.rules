@@ -1,0 +1,24 @@
+rules_version = '2';
+
+// Lock everything down. The contact function and the Trigger Email extension
+// both use the Admin SDK, which BYPASSES these rules — so they can still read
+// and write. Browsers/public clients can do nothing here.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Contact-form submissions — backend-only.
+    match /contacts/{doc} {
+      allow read, write: if false;
+    }
+
+    // Mail queue consumed by the "Trigger Email" extension — backend-only.
+    match /mail/{doc} {
+      allow read, write: if false;
+    }
+
+    // Default deny for anything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
