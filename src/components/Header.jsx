@@ -28,7 +28,7 @@ export default function Header() {
       <div className="header__inner">
         <Link to="/" className="header__brand" onClick={() => blip(660)}>
           <span className="header__avatar">
-            <img src="/images/arju.jpg" alt="Arju Singh" width="32" height="32" loading="eager" />
+            <AvatarLiquid src="/images/arju.jpg" alt="Arju Singh" />
           </span>
           <span className="header__name">{PROFILE.name}</span>
         </Link>
