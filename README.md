@@ -1,182 +1,50 @@
-# Portfolio Website - React Version
+# Arju Singh — Portfolio
 
-This is a fully responsive portfolio website built with **React.js**, converted from the original HTML/CSS/JS version.
+A Framer-style portfolio built with **React + Vite**, **motion** (Framer Motion),
+**three.js**, and **react-countup**. Scroll-triggered reveals, an infinite CSS
+marquee, animated counters, a generative Web Audio ambient layer, and styled-JSX
+app mockups (no PNG screenshots).
 
-## Features
+## Stack
 
-- **Responsive Design** - Works perfectly on all devices
-- **Modern UI/UX** - Clean, professional design with smooth animations
-- **React Components** - Modular, reusable component architecture
-- **Contact Form** - Working contact form with FormSubmit integration
-- **Smooth Scrolling** - Enhanced user experience with smooth navigation
-- **SEO Optimized** - Meta tags and semantic HTML
+- **React 18 + React Router** — multi-page SPA with animated page transitions
+- **motion/react** — `whileInView` reveals, layout animations, page transitions
+- **three.js** — animated particle/wave hero background (`src/three/ParticleField.jsx`)
+- **react-countup** — scroll-spy stat counters
+- **Web Audio API** — generative ambient engine + live analyser visualizer (`src/hooks/SoundContext.jsx`)
+- **Lenis** — smooth scroll (`src/hooks/useLenis.js`)
+- Custom bespoke ring cursor (`src/components/Cursor.jsx`)
 
-## Tech Stack
+## Pages
 
-- **React.js** - Frontend framework
-- **CSS3** - Styling with modern CSS features
-- **Font Awesome** - Icons
-- **FormSubmit** - Contact form backend
+| Route | Page |
+| --- | --- |
+| `/` | Home — hero, marquee, about + stats, capabilities, featured work |
+| `/work` | Experience timeline, education, certifications |
+| `/projects` | Filterable project grid |
+| `/projects/:slug` | Project detail with mockup |
+| `/sound` | Interactive Web Audio experience + playable pad |
+| `/resources` | Résumé/CV download, profiles, full skill matrix |
+| `/contact` | Contact details + mailto form |
 
-## Project Structure
-
-```
-react-portfolio/
-├── public/
-│   ├── assets/              # Images and media files
-│   └── index.html           # HTML template
-├── src/
-│   ├── components/          # React components
-│   │   ├── Navbar.js
-│   │   ├── Hero.js
-│   │   ├── About.js
-│   │   ├── Skills.js
-│   │   ├── Projects.js
-│   │   ├── Testimonials.js
-│   │   ├── Contact.js
-│   │   └── Footer.js
-│   ├── App.js               # Main App component
-│   ├── App.css              # Main styles
-│   ├── index.js             # React entry point
-│   └── index.css            # Global styles
-├── package.json             # Dependencies
-└── README.md                # This file
-```
-
-## Installation & Setup
-
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Steps
-
-1. **Navigate to the project directory:**
-   ```bash
-   cd react-portfolio
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the development server:**
-   ```bash
-   npm start
-   ```
-
-4. **Open your browser:**
-   The app will automatically open at `http://localhost:3000`
-
-## Building for Production
-
-To create an optimized production build:
+## Run
 
 ```bash
+npm install
+npm run dev      # http://localhost:3479
 npm run build
+npm run preview
 ```
 
-This will create a `build` folder with optimized files ready for deployment.
+## Content
 
-## Deployment
+Everything is data-driven from **`src/data/profile.js`** — profile, stats, skills,
+experience, projects, certifications and resources. Edit that one file to update the
+whole site. The résumé PDF lives at `public/Arju_Singh_CV.pdf`.
 
-### Deploy to GitHub Pages
+## Notes
 
-1. Install gh-pages:
-   ```bash
-   npm install --save-dev gh-pages
-   ```
-
-2. Add to package.json:
-   ```json
-   "homepage": "https://yourusername.github.io/portfolio",
-   "scripts": {
-     "predeploy": "npm run build",
-     "deploy": "gh-pages -d build"
-   }
-   ```
-
-3. Deploy:
-   ```bash
-   npm run deploy
-   ```
-
-### Deploy to Netlify
-
-1. Build the project: `npm run build`
-2. Drag the `build` folder to Netlify
-3. Done!
-
-### Deploy to Vercel
-
-1. Install Vercel CLI: `npm install -g vercel`
-2. Run: `vercel`
-3. Follow the prompts
-
-## Contact Form Setup
-
-The contact form uses FormSubmit. To activate it:
-
-1. Fill out the form once with any test data
-2. Check your email (connect@arjusingh.com) for activation link
-3. Click the activation link
-4. Form is now active!
-
-## Customization
-
-### Update Personal Information
-
-Edit the following files:
-- `src/components/Hero.js` - Name, titles, social links
-- `src/components/About.js` - About text, stats
-- `src/components/Skills.js` - Skills and tools
-- `src/components/Projects.js` - Project details
-- `src/components/Contact.js` - Contact email
-
-### Change Colors
-
-Edit `src/App.css` and update the CSS variables at the top:
-```css
-:root {
-    --primary: #6366f1;
-    --accent: #8b5cf6;
-    /* ... other variables */
-}
-```
-
-### Add/Remove Sections
-
-Edit `src/App.js` to add or remove components from the main layout.
-
-## Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm run build` - Builds the app for production
-- `npm test` - Runs tests
-- `npm run eject` - Ejects from Create React App (one-way operation)
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Author
-
-**Arju Singh**
-- Email: connect@arjusingh.com
-- LinkedIn: [Arju Singh](https://www.linkedin.com/in/arju-singh-0ab697228/)
-- GitHub: [@deadxolo](https://github.com/deadxolo)
-
----
-
-Made with ❤️ using React.js
-# Portfolio
-# Portfolio
-# port-slide
+- Respects `prefers-reduced-motion` (smooth scroll, three.js wave and reveals back off).
+- The custom cursor and three.js layer disable themselves on touch / coarse pointers.
+- The mockup "app screenshots" are real styled JSX (`src/components/Mockup.jsx`), not images.
+- No audio files — the ambient layer is synthesized live with the Web Audio API.

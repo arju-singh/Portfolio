@@ -1,0 +1,214 @@
+/*
+ * Custom cursor — bespoke ring system modelled on the unseen.co `.cursor`.
+ * Vanilla CSS + JS (logic in Cursor.jsx). No third-party cursor library.
+ *
+ * Layer map:
+ *   .cursor           fixed container, follows the mouse via JS translate3d
+ *   .cursor__wrap     inner wrapper, transform-origin: left top (scaling pivot)
+ *   .cursor__inner    98x98 relative box centred on the cursor point
+ *   .cursor__circle   the visible ring (30.8px, 1.5px border, fully rounded)
+ *   .cursor__hold-*   filled dot + outline ring for the press/hold state
+ *   .cursor__drag     SVG arrows shown over draggable elements
+ *   .cursor__progress SVG ring for loading/progress
+ *   .cursor__video    play glyph for video targets
+ *
+ * The ring colour is driven by --cursor-color so regions can invert it
+ * (dark ring on light panels via [data-cursor-color]).
+ */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11000;
+  pointer-events: none;
+  will-change: transform; /* JS writes translate3d() here */
+  --cursor-color: rgb(244, 243, 239);
+}
+
+.cursor__wrap {
+  transform-origin: left top;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor__inner {
+  position: relative;
+  width: 98px;
+  height: 98px;
+  transform: translate(-50%, -50%); /* centre the box on the cursor point */
+}
+
+.cursor__circle,
+.cursor__dot,
+.cursor__hold-inner,
+.cursor__hold-outer,
+.cursor__drag,
+.cursor__progress,
+.cursor__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---- inner dot (fast follow layer) ------------------------------------ */
+.cursor__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cursor-color);
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.3s ease, opacity 0.25s ease;
+}
+
+/* ---- the ring ---------------------------------------------------------- */
+.cursor__circle {
+  width: 30.8px;
+  height: 30.8px;
+  border: 1.5px solid var(--cursor-color);
+  border-radius: 16.8px; /* >= half of 30.8 → perfect circle */
+  background: transparent;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+}
+
+/* ---- hold / press ------------------------------------------------------ */
+.cursor__hold-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cursor-color);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cursor__hold-outer {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cursor-color);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- drag / progress / video glyphs ----------------------------------- */
+.cursor__drag,
+.cursor__progress,
+.cursor__video {
+  width: 46px;
+  height: 46px;
+  color: var(--cursor-color);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cursor__drag svg,
+.cursor__progress svg,
+.cursor__video svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ======================================================================= */
+/* STATE MODIFIERS — toggled on .cursor by the JS                          */
+/* ======================================================================= */
+
+/* hover — the ring swells around the target */
+.cursor--hover .cursor__circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: rgba(127, 127, 127, 0.06);
+}
+
+/* text — dot becomes a thin caret bar, ring fades away */
+.cursor--text .cursor__dot {
+  width: 3px;
+  height: 30px;
+  border-radius: 2px;
+}
+.cursor--text .cursor__circle {
+  opacity: 0;
+}
+
+/* drag — fade the ring back, reveal the arrows */
+.cursor--drag .cursor__circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  opacity: 0.35;
+}
+.cursor--drag .cursor__drag {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* video — large ring + play glyph */
+.cursor--video .cursor__circle {
+  width: 76px;
+  height: 76px;
+  border-radius: 38px;
+  background: rgba(127, 127, 127, 0.1);
+}
+.cursor--video .cursor__video {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* hold / press — fired on pointerdown */
+.cursor--hold .cursor__dot {
+  opacity: 0;
+}
+.cursor--hold .cursor__circle {
+  opacity: 0;
+}
+.cursor--hold .cursor__hold-inner {
+  opacity: 1;
+}
+.cursor--hold .cursor__hold-outer {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* progress — show the spinning ring (toggle .cursor--progress to use) */
+.cursor--progress .cursor__circle {
+  opacity: 0;
+}
+.cursor--progress .cursor__progress {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.cursor--progress .cursor__progress svg {
+  animation: cursor-spin 0.9s linear infinite;
+}
+
+/* hidden — pointer off-window */
+.cursor--hidden .cursor__wrap {
+  opacity: 0;
+}
+
+@keyframes cursor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hide the native pointer only while the custom cursor is live. */
+@media (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* Respect reduced-motion / coarse pointers — the native cursor stays. */
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}

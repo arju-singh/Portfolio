@@ -1,0 +1,109 @@
+/* Ambient butterfly layer — sits behind page content, never blocks clicks. */
+.butterflies {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Each butterfly: an outer span drifts along a looping path (translate),
+   an inner span gives a gentle bob, and two wings flap. */
+.bfly {
+  position: absolute;
+  width: 30px;
+  height: 26px;
+  transform: scale(var(--scale));
+  animation: bfly-drift var(--dur) ease-in-out var(--delay) infinite;
+  will-change: transform;
+}
+
+.bfly__inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  animation: bfly-bob calc(var(--dur) * 0.18) ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.bfly__wing {
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 26px;
+  background: radial-gradient(
+    120% 120% at 50% 0%,
+    color-mix(in srgb, var(--wing) 85%, white) 0%,
+    var(--wing) 45%,
+    color-mix(in srgb, var(--wing) 40%, transparent) 100%
+  );
+  border-radius: 80% 20% 75% 25% / 90% 55% 45% 10%;
+  backface-visibility: hidden;
+}
+
+.bfly__wing--l {
+  left: 0;
+  transform-origin: right center;
+  transform: rotateY(45deg) rotate(-8deg);
+  animation: bfly-flap-l var(--flap) ease-in-out infinite;
+}
+.bfly__wing--r {
+  right: 0;
+  transform-origin: left center;
+  transform: rotateY(45deg) rotate(8deg) scaleX(-1);
+  animation: bfly-flap-r var(--flap) ease-in-out infinite;
+}
+
+.bfly__body {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  width: 2px;
+  height: 22px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--wing) 60%, #000 40%);
+}
+
+/* drift: a wandering diagonal loop using the per-fly --dx/--dy travel */
+@keyframes bfly-drift {
+  0% {
+    transform: translate(0, 0) scale(var(--scale)) rotate(-4deg);
+  }
+  25% {
+    transform: translate(calc(var(--dx) * 0.5), calc(var(--dy) * -0.6)) scale(var(--scale)) rotate(6deg);
+  }
+  50% {
+    transform: translate(var(--dx), var(--dy)) scale(var(--scale)) rotate(-3deg);
+  }
+  75% {
+    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.7)) scale(var(--scale)) rotate(5deg);
+  }
+  100% {
+    transform: translate(0, 0) scale(var(--scale)) rotate(-4deg);
+  }
+}
+
+@keyframes bfly-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* wing flap — open/close by sweeping the Y rotation */
+@keyframes bfly-flap-l {
+  0%, 100% { transform: rotateY(72deg) rotate(-8deg); }
+  50% { transform: rotateY(8deg) rotate(-8deg); }
+}
+@keyframes bfly-flap-r {
+  0%, 100% { transform: rotateY(72deg) rotate(8deg) scaleX(-1); }
+  50% { transform: rotateY(8deg) rotate(8deg) scaleX(-1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bfly,
+  .bfly__inner,
+  .bfly__wing--l,
+  .bfly__wing--r {
+    animation: none !important;
+  }
+}

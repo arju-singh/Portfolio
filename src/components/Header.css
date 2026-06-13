@@ -1,0 +1,204 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px var(--pad) 0;
+}
+
+.header__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 16px 12px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 10, 14, 0.62);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+/* Round portrait avatar with a small spinning accent mark pinned to it. */
+.header__avatar {
+  position: relative;
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  flex: none;
+}
+/* liquid-mirror avatar: img (instant/fallback) + canvas stacked in one circle */
+.avatar-liquid {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.avatar-liquid__img,
+.avatar-liquid__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+}
+.avatar-liquid__img {
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+.avatar-liquid__canvas {
+  pointer-events: auto; /* receive hover to boost the effect */
+}
+.header__mark {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-style: normal;
+  line-height: 1;
+  animation: spin 14s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.header__name {
+  font-size: 0.95rem;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.header__link {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: color 0.25s, background 0.25s;
+}
+.header__link:hover {
+  color: var(--text);
+}
+.header__link.is-active {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 14px;
+  transition: color 0.25s, border-color 0.25s;
+}
+.sound-toggle.is-on {
+  color: var(--accent);
+  border-color: rgba(200, 255, 77, 0.4);
+}
+.sound-toggle__bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.sound-toggle__bars i {
+  width: 2px;
+  height: 3px;
+  background: currentColor;
+  border-radius: 2px;
+}
+.sound-toggle.is-on .sound-toggle__bars i {
+  animation: eq 0.9s ease-in-out infinite;
+}
+.sound-toggle__bars i:nth-child(2) { animation-delay: 0.15s; }
+.sound-toggle__bars i:nth-child(3) { animation-delay: 0.3s; }
+.sound-toggle__bars i:nth-child(4) { animation-delay: 0.45s; }
+@keyframes eq {
+  0%, 100% { height: 3px; }
+  50% { height: 12px; }
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+.burger span {
+  width: 16px;
+  height: 1.5px;
+  background: var(--text);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.burger.is-open span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.burger.is-open span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .header__nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: var(--pad);
+    right: var(--pad);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 12px;
+    background: rgba(12, 12, 16, 0.96);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .header__nav.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .header__link {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+  .burger {
+    display: flex;
+  }
+  .sound-toggle__label {
+    display: none;
+  }
+}

@@ -1,0 +1,78 @@
+/* Pinned About — image left, scrolling content right (GSAP ScrollTrigger). */
+.about2__wrap {
+  display: grid;
+  grid-template-columns: clamp(360px, 46%, 640px) 1fr;
+  gap: clamp(40px, 5vw, 80px);
+  align-items: start;
+}
+
+/* full image, never cropped — its natural height sets the frame */
+.about2__media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  display: block;
+}
+
+/* taller content column → the image stays pinned for longer */
+.about2__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(40px, 6vw, 96px);
+  min-height: 185vh;
+  padding: 10px 0 60px;
+}
+.about2__head {
+  font-size: clamp(1.6rem, 3.1vw, 2.7rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.about2__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.about2__stat {
+  background: var(--panel);
+  padding: clamp(20px, 2.4vw, 30px);
+}
+.about2__stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.about2__stat-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+
+/* Stacked, no pin on small screens (JS also bails out of the pin there). */
+@media (max-width: 900px) {
+  .about2__wrap {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .about2__media {
+    max-width: 280px;
+  }
+  .about2__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .about2__stats {
+    grid-template-columns: 1fr;
+  }
+}

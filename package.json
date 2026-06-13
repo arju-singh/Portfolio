@@ -1,33 +1,25 @@
 {
-  "name": "portfolio-react",
-  "version": "1.0.0",
+  "name": "arju-singh-portfolio",
   "private": true,
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
-  },
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "lenis": "^1.1.14",
+    "motion": "^11.11.0",
+    "react": "^18.3.1",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
+    "three": "^0.169.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.8"
   }
 }

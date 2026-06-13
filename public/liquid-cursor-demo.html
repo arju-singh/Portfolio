@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liquid Cursor — standalone demo</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root { --lime: #c8ff4d; }
+      body {
+        min-height: 100vh;
+        background: radial-gradient(120% 120% at 50% 0%, #14141c 0%, #07070a 60%);
+        color: #f4f3ef;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+      }
+      .eyebrow {
+        font-family: ui-monospace, 'JetBrains Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--lime);
+      }
+      h1 {
+        font-size: clamp(2.6rem, 8vw, 6rem);
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+      }
+      p.lead { max-width: 52ch; color: #9b9aa3; font-size: clamp(1rem, 2vw, 1.2rem); }
+
+      .row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+      .btn {
+        font-family: ui-monospace, monospace;
+        font-size: 13px;
+        padding: 13px 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: none;
+        color: inherit;
+        cursor: pointer;
+      }
+      .btn--solid { background: var(--lime); color: #0a0a0a; border-color: var(--lime); font-weight: 600; }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        padding: 80px 0 120px;
+      }
+      .card {
+        aspect-ratio: 4 / 3;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, #1a1a22, #101016);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: ui-monospace, monospace;
+        color: #65646d;
+      }
+      .panel {
+        margin: 40px 0 100px;
+        padding: 48px;
+        border-radius: 20px;
+        /* a light panel — great for seeing the chrome sheen against it */
+        background: #f4f3ef;
+        color: #15151b;
+      }
+      .panel h2 { font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
+
+      .controls {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 99999;
+        display: flex;
+        gap: 8px;
+        background: rgba(10, 10, 14, 0.8);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        padding: 8px;
+      }
+      .controls button {
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: none;
+        color: #f4f3ef;
+        cursor: pointer;
+      }
+      .controls button.is-active { background: var(--lime); color: #0a0a0a; border-color: var(--lime); }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">WebGL2 · zero dependencies</p>
+        <h1>Move your<br />cursor around.</h1>
+        <p class="lead">
+          This is the liquid-mirror trail running standalone — no React, no
+          libraries. Sweep across the headline, the cards below, and the light
+          panel to see the chrome + Fresnel sheen react to different backgrounds.
+        </p>
+        <div class="row">
+          <button class="btn btn--solid">A button</button>
+          <button class="btn">Another button</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="grid">
+        <div class="card">01</div>
+        <div class="card">02</div>
+        <div class="card">03</div>
+        <div class="card">04</div>
+        <div class="card">05</div>
+        <div class="card">06</div>
+      </div>
+
+      <div class="panel">
+        <h2>On a light surface</h2>
+        <p>The trail is a translucent film, so it picks up whatever sits behind it.</p>
+      </div>
+    </div>
+
+    <!-- intensity toggle, just for the demo -->
+    <div class="controls">
+      <button data-intensity="subtle" class="is-active">subtle</button>
+      <button data-intensity="bold">bold</button>
+    </div>
+
+    <script type="module">
+      import { initLiquidCursor } from '/liquid-cursor.js';
+
+      let destroy = initLiquidCursor({ intensity: 'subtle' });
+
+      // Demo-only: let you flip between intensities live.
+      document.querySelectorAll('.controls button').forEach((b) => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.controls button').forEach((x) => x.classList.remove('is-active'));
+          b.classList.add('is-active');
+          destroy();
+          destroy = initLiquidCursor({ intensity: b.dataset.intensity });
+        });
+      });
+    </script>
+  </body>
+</html>
