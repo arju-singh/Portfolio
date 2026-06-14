@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "arjusingh-e72f1"
+  },
+  "targets": {},
+  "etags": {
+    "arjusingh-e72f1": {
+      "extensionInstances": {
+        "firestore-send-email": "9776c8bd58de0ff72446a2a465e6c1f20609394c7ce30513fed1437d1592562a"
+      }
+    }
   }
 }
