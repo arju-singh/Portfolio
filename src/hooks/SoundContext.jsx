@@ -100,6 +100,42 @@ export function SoundProvider({ children }) {
     o.stop(now + 0.24);
   }, [enabled]);
 
+  // Auto-start the ambient sound when the site opens. Browsers block audio
+  // before a user gesture, so we try to resume immediately and — if blocked —
+  // arm one-time listeners that start it on the visitor's first interaction.
+  // Visitors can always stop it with the floating sound button.
+  useEffect(() => {
+    let cancelled = false;
+    const gestures = ['pointerdown', 'keydown', 'touchstart', 'wheel'];
+    const startOnGesture = () => {
+      gestures.forEach((g) => window.removeEventListener(g, startOnGesture));
+      if (!cancelled) enable();
+    };
+
+    (async () => {
+      const eng = build();
+      if (!eng || cancelled) return;
+      try {
+        await eng.ctx.resume();
+      } catch {
+        /* autoplay blocked — fall through to gesture fallback */
+      }
+      if (cancelled) return;
+      if (eng.ctx.state === 'running') {
+        enable();
+      } else {
+        gestures.forEach((g) =>
+          window.addEventListener(g, startOnGesture, { passive: true })
+        );
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      gestures.forEach((g) => window.removeEventListener(g, startOnGesture));
+    };
+  }, [build, enable]);
+
   useEffect(() => {
     return () => {
       const eng = ref.current;
@@ -111,6 +147,10 @@ export function SoundProvider({ children }) {
         } catch {
           /* noop */
         }
+        // Clear the ref so build() recreates a fresh engine on remount.
+        // Without this, React StrictMode's mount→unmount→remount leaves a
+        // closed AudioContext cached here and no sound ever plays.
+        ref.current = null;
       }
     };
   }, []);

@@ -123,15 +123,18 @@ export const EXPERIENCE = [
   }
 ];
 
-// Live startups + key projects. `kind` drives the mockup style.
+// Live startups + key projects. `kind` drives the mockup style, which is used
+// as a fallback whenever `image` is unset or fails to load. Drop real
+// screenshots in public/images/projects/<slug>.jpg to show them instead.
 export const PROJECTS = [
   {
     slug: 'petscare-club',
+    image: '/images/projects/petscare-club.jpg',
     title: 'PetsCare.Club',
     category: 'Live Startup · PetTech',
-    kind: 'dashboard',
+    kind: 'petcare',
     year: '2024',
-    accent: '#6ee7b7',
+    accent: '#f5b400',
     link: 'https://petscare.club',
     summary: 'A live pet-care platform connecting owners with vets, groomers and communities.',
     description:
@@ -145,11 +148,12 @@ export const PROJECTS = [
   },
   {
     slug: 'lawms',
+    image: '/images/projects/lawms.jpg',
     title: 'LawMS',
     category: 'Live Startup · LegalTech',
-    kind: 'kanban',
+    kind: 'legal',
     year: '2024',
-    accent: '#c4b5fd',
+    accent: '#6366f1',
     link: 'https://lawms.in',
     summary: 'AI-powered legal management — case tracking, document AI and automated billing.',
     description:
@@ -163,6 +167,7 @@ export const PROJECTS = [
   },
   {
     slug: 'portfolio',
+    image: '/images/projects/portfolio.jpg',
     title: 'Portfolio',
     category: 'Key Project · Web',
     kind: 'site',
@@ -181,6 +186,7 @@ export const PROJECTS = [
   },
   {
     slug: 'analytics-dashboard',
+    image: '/images/projects/analytics-dashboard.jpg',
     title: 'Analytics Dashboard',
     category: 'Key Project · BI',
     kind: 'analytics',
@@ -199,6 +205,7 @@ export const PROJECTS = [
   },
   {
     slug: 'task-management',
+    image: '/images/projects/task-management.jpg',
     title: 'Task Management System',
     category: 'Key Project · Productivity',
     kind: 'kanban',
@@ -217,6 +224,7 @@ export const PROJECTS = [
   },
   {
     slug: 'flappy-bird',
+    image: '/images/projects/flappy-bird.jpg',
     title: 'Flappy Bird Game',
     category: 'Key Project · Game',
     kind: 'game',
@@ -235,6 +243,7 @@ export const PROJECTS = [
   },
   {
     slug: 'hope-charity',
+    image: '/images/projects/hope-charity.jpg',
     title: 'Hope Charity Website',
     category: 'Key Project · Non-profit',
     kind: 'site',

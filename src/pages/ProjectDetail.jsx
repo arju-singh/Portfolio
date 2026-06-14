@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import Mockup from '../components/Mockup';
+import ProjectVisual from '../components/ProjectVisual';
 import Reveal from '../components/Reveal';
 import { PROJECTS } from '../data/profile';
 import './ProjectDetail.css';
@@ -54,7 +54,7 @@ export default function ProjectDetail() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Mockup kind={project.kind} accent={project.accent} title={project.title} />
+        <ProjectVisual project={project} className="pdetail__img" />
       </motion.div>
 
       <div className="wrap pdetail__grid">

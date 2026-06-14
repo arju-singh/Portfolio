@@ -22,10 +22,18 @@
   overflow: hidden;
   margin-bottom: 18px;
 }
-.pcard__visual .mk {
+.pcard__visual .mk,
+.pcard__img {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.pcard__link:hover .pcard__visual .mk {
+.pcard__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.pcard__link:hover .pcard__visual .mk,
+.pcard__link:hover .pcard__img {
   transform: scale(1.03);
 }
 .pcard__year {

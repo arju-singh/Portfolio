@@ -56,10 +56,17 @@
 .pdetail__visual {
   margin-block: clamp(50px, 8vw, 90px);
 }
-.pdetail__visual .mk {
+.pdetail__visual .mk,
+.pdetail__img {
   aspect-ratio: 16 / 9;
   max-width: 980px;
   margin: 0 auto;
+}
+.pdetail__img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 14px;
 }
 .pdetail__grid {
   display: grid;

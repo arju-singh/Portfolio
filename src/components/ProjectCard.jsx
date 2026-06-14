@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import Mockup from './Mockup';
+import ProjectVisual from './ProjectVisual';
 import './ProjectCard.css';
 
 export default function ProjectCard({ project, index = 0 }) {
@@ -15,7 +15,7 @@ export default function ProjectCard({ project, index = 0 }) {
     >
       <Link to={`/projects/${project.slug}`} className="pcard__link" data-hover>
         <div className="pcard__visual">
-          <Mockup kind={project.kind} accent={project.accent} title={project.title} />
+          <ProjectVisual project={project} className="pcard__img" />
           <span className="pcard__year">{project.year}</span>
         </div>
         <div className="pcard__meta">
