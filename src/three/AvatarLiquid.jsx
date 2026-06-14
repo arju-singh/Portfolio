@@ -80,10 +80,15 @@ export default function AvatarLiquid({ src, alt = '', className = '' }) {
     // fallback). The canvas draws the liquid version directly over it, so even
     // if WebGL/texture upload fails the plain photo is always shown.
     let ready = false;
+    let disposed = false;
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = src;
     img.onload = () => {
+      // The image can finish loading after the effect cleanup already deleted
+      // the texture (e.g. StrictMode unmount). Bail out so we don't touch a
+      // deleted GL object.
+      if (disposed) return;
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
       ready = true;
@@ -123,6 +128,8 @@ export default function AvatarLiquid({ src, alt = '', className = '' }) {
     document.addEventListener('visibilitychange', onVis);
 
     return () => {
+      disposed = true;
+      img.onload = null;
       cancelAnimationFrame(raf);
       document.removeEventListener('visibilitychange', onVis);
       canvas.removeEventListener('pointerenter', onEnter);

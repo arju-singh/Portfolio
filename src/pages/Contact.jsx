@@ -5,6 +5,11 @@ import Reveal from '../components/Reveal';
 import { PROFILE } from '../data/profile';
 import './Contact.css';
 
+// Web3Forms access key — get a free one at https://web3forms.com (enter your
+// email, no account needed). It's a public submission key, safe to ship in the
+// client. Set it here or via a VITE_WEB3FORMS_KEY env var.
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || 'YOUR_WEB3FORMS_ACCESS_KEY';
+
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '', company: '' });
   // status: 'idle' | 'sending' | 'sent' | 'error'
@@ -23,19 +28,37 @@ export default function Contact() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Honeypot: bots that fill the hidden "company" field are dropped silently.
+    if (form.company) {
+      setStatus('sent');
+      setForm({ name: '', email: '', message: '', company: '' });
+      return;
+    }
+
     setStatus('sending');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Portfolio enquiry from ${form.name}`,
+          from_name: form.name,
+          name: form.name,
+          email: form.email,
+          replyto: form.email,
+          message: form.message,
+          botcheck: '',
+        }),
       });
-      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
       setStatus('sent');
       setForm({ name: '', email: '', message: '', company: '' });
     } catch {
-      // Backend unavailable (e.g. running the static build with no Functions) —
-      // fall back to the user's mail client so the message still gets through.
+      // Web3Forms unreachable or misconfigured — fall back to the user's mail
+      // client so the message still gets through.
       setStatus('error');
       openMailto();
     }
