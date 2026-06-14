@@ -136,6 +136,23 @@ export function SoundProvider({ children }) {
     };
   }, [build, enable]);
 
+  // Pause the audio whenever this tab is hidden (switched away / minimized) and
+  // resume it on return — but only if sound was on. So the ambient layer plays
+  // only while this site's tab is actually open and focused.
+  useEffect(() => {
+    const onVisibility = () => {
+      const eng = ref.current;
+      if (!eng) return;
+      if (document.hidden) {
+        if (eng.ctx.state === 'running') eng.ctx.suspend();
+      } else if (enabled && eng.ctx.state === 'suspended') {
+        eng.ctx.resume();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [enabled]);
+
   useEffect(() => {
     return () => {
       const eng = ref.current;
